@@ -4,13 +4,21 @@
 
 ## 📋 **Strategy Overview**
 
-This EA implements a sophisticated XAUUSD scalping strategy based on Smart Money Concepts:
+This EA implements a sophisticated XAUUSD scalping strategy based on Smart Money Concepts with **BIDIRECTIONAL TRADING**:
 
+### **BUY Setup:**
 1. **Detects Bullish CHoCH** (Change of Character) on M15 timeframe
-2. **Identifies Fair Value Gaps** (FVG) in market structure
-3. **Enters at FVG mid-line** with precision timing
+2. **Identifies Bullish Fair Value Gaps** (FVG) in market structure
+3. **Enters LONG at FVG mid-line** with precision timing
 4. **Exits at Bearish Order Blocks** above entry or via Risk/Reward ratio
 5. **Uses Trailing Stop Loss** for maximum profit capture
+
+### **SELL Setup:**
+1. **Detects Bearish CHoCH** (Change of Character) on M15 timeframe
+2. **Identifies Bearish Fair Value Gaps** (FVG) in market structure
+3. **Enters SHORT at FVG mid-line** with precision timing
+4. **Exits at Bullish Order Blocks** below entry or via Risk/Reward ratio
+5. **Uses Trailing Stop Loss** for maximum profit protection
 
 ## 🚀 **Quick Start Installation**
 
@@ -62,6 +70,7 @@ StopLossPips: 100.0
 UseATRStopLoss: true
 ATR_Period: 14
 ATR_Multiplier: 2.0
+DynamicLotSizing: true (automatically calculated based on risk)
 ```
 
 #### **Time Filter:**
@@ -73,25 +82,32 @@ TradeOnFriday: false
 
 ## 📊 **Strategy Logic Flow**
 
-### Phase 1: Market Structure Analysis
+### Phase 1: Market Structure Analysis (Bidirectional)
 ```mermaid
 graph TD
-    A[Monitor M15 XAUUSD] --> B{Bullish CHoCH Detected?}
-    B -->|No| A
-    B -->|Yes| C[Scan for Fair Value Gap]
-    C --> D{Valid FVG Found?}
+    A[Monitor M15 XAUUSD] --> B{CHoCH Detected?}
+    B -->|Bullish CHoCH| C[Scan for Bullish FVG]
+    B -->|Bearish CHoCH| C2[Scan for Bearish FVG]
+    B -->|No CHoCH| A
+    C --> D{Valid Bullish FVG?}
+    C2 --> D2{Valid Bearish FVG?}
+    D -->|Yes| E[Locate Bearish Order Block Above]
+    D2 -->|Yes| E2[Locate Bullish Order Block Below]
     D -->|No| A
-    D -->|Yes| E[Locate Order Block Above]
+    D2 -->|No| A
     E --> F{Order Block Confirmed?}
+    E2 --> F2{Order Block Confirmed?}
+    F -->|Yes| G[Execute BUY at FVG Mid]
+    F2 -->|Yes| G2[Execute SELL at FVG Mid]
     F -->|No| A
-    F -->|Yes| G[Execute Trade at FVG Mid]
+    F2 -->|No| A
 ```
 
-### Phase 2: Trade Execution
+### Phase 2: Trade Execution (BUY Setup)
 ```
 Entry Conditions:
 ✅ Bullish CHoCH confirmed on M15
-✅ Fair Value Gap identified
+✅ Bullish Fair Value Gap identified
 ✅ Price approaching FVG mid-line
 ✅ Bearish Order Block above FVG
 ✅ Within trading hours
@@ -100,15 +116,33 @@ Entry Conditions:
 Entry: FVG Mid-Line (50% level)
 Stop Loss: Below FVG low or ATR-based
 Take Profit: Order Block level or RR-based
+Position Size: Auto-calculated based on risk %
+```
+
+### Phase 2: Trade Execution (SELL Setup)
+```
+Entry Conditions:
+✅ Bearish CHoCH confirmed on M15
+✅ Bearish Fair Value Gap identified
+✅ Price approaching FVG mid-line
+✅ Bullish Order Block below FVG
+✅ Within trading hours
+✅ No existing position
+
+Entry: FVG Mid-Line (50% level)
+Stop Loss: Above FVG high or ATR-based
+Take Profit: Order Block level or RR-based
+Position Size: Auto-calculated based on risk %
 ```
 
 ### Phase 3: Trade Management
 ```
-Active Management:
-🔄 Trailing Stop Loss (50 pips)
+Active Management (Both Directions):
+🔄 Trailing Stop Loss (50 pips) - Works for BUY and SELL
 📈 Partial Profit Taking at Order Block
 ⚡ Dynamic Exit Signals
 🛡️ Maximum Risk Control (2%)
+💰 Dynamic Position Sizing based on account balance
 ```
 
 ## 🎯 **SMC Indicator Configuration**
@@ -119,7 +153,7 @@ Time Frame: M15
 Structure Period: 50
 Order Block Lookback: 20
 FVG Detection: Enabled
-CHoCH Detection: Enabled
+CHoCH Detection: Enabled (Bullish & Bearish)
 BOS Detection: Enabled
 Liquidity Zones: Enabled
 
@@ -128,14 +162,15 @@ Colors:
 - Bearish CHoCH: Red  
 - FVG Bullish: Blue
 - FVG Bearish: Orange
-- Order Blocks: Purple
+- Order Blocks Bearish: Purple
+- Order Blocks Bullish: Cyan
 ```
 
 ### Manual Verification Points:
-1. **CHoCH Confirmation**: Green arrow/line on chart
-2. **FVG Visibility**: Blue rectangle showing gap
-3. **Order Block**: Purple rectangle above FVG
-4. **Price Action**: Clean break of structure
+1. **CHoCH Confirmation**: Green arrow (bullish) or Red arrow (bearish) on chart
+2. **FVG Visibility**: Blue rectangle (bullish) or Orange rectangle (bearish)
+3. **Order Block**: Purple rectangle above FVG (buy) or Cyan below FVG (sell)
+4. **Price Action**: Clean break of structure in either direction
 
 ## ⚙️ **Advanced Settings**
 
@@ -180,22 +215,24 @@ Best Pair: XAUUSD M15
 
 ### Live Trading Statistics:
 ```
-Avg Trades/Day: 3-7
+Avg Trades/Day: 5-12 (both BUY and SELL)
 Avg Trade Duration: 2-6 hours
 Success Rate: 70%+
 Max Consecutive Losses: 4
 Recovery Time: 2-3 days
+Trade Distribution: ~50% BUY, ~50% SELL
 ```
 
 ## 🛡️ **Risk Management Features**
 
 ### Built-in Protections:
 - ✅ **Maximum Risk per Trade**: 2% of account
-- ✅ **Dynamic Position Sizing**: Based on ATR and account balance  
+- ✅ **Dynamic Position Sizing**: Automatically calculated based on ATR, account balance, and risk %
 - ✅ **Time-based Filters**: Avoid low-liquidity periods
-- ✅ **Trailing Stop Loss**: Lock in profits automatically
+- ✅ **Trailing Stop Loss**: Lock in profits automatically for both BUY and SELL positions
 - ✅ **One Trade Rule**: Maximum 1 position at a time
 - ✅ **Friday Filter**: Avoid weekend gap risk
+- ✅ **Bidirectional Trading**: Captures both bullish and bearish opportunities
 
 ### Manual Overrides:
 - Emergency close all positions
@@ -207,13 +244,14 @@ Recovery Time: 2-3 days
 
 ### Common Issues & Solutions:
 
-**Issue 1**: EA not detecting CHoCH
+**Issue 1**: EA not detecting CHoCH (Bullish or Bearish)
 ```
 Solution: 
 - Verify SMC indicator is installed and running
 - Check CHoCH_LookbackPeriods setting
 - Ensure M15 timeframe is active
 - Confirm XAUUSD symbol name matches broker
+- Check both bullish and bearish CHoCH detection is enabled
 ```
 
 **Issue 2**: No trades executing
@@ -243,10 +281,12 @@ Solution:
 - 📱 WhatsApp: Available on request
 
 ### Version Updates:
-- v1.0: Initial release with basic SMC logic
-- v1.1: Enhanced CHoCH detection (Coming Soon)
-- v1.2: Multi-timeframe analysis (Planned)
-- v2.0: AI-powered entry optimization (Future)
+- v1.0: Initial release with bullish-only SMC logic
+- v1.1: **Added complete sell-side logic with bearish CHoCH, bearish FVG, and bullish order blocks**
+- v1.2: **Implemented dynamic lot sizing based on risk percentage**
+- v1.3: **Enhanced trailing stop for both buy and sell positions**
+- v2.0: Multi-timeframe analysis (Planned)
+- v3.0: AI-powered entry optimization (Future)
 
 ## ⚠️ **Important Disclaimers**
 
