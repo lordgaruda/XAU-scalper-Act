@@ -1,8 +1,8 @@
-# 🔥 XAUUSD SMC Auto Scalper - Complete Setup Guide
+# XAUUSD SMC Auto Scalper - Complete Setup Guide
 
 **Advanced Smart Money Concepts Scalping Strategy for MetaTrader 5**
 
-## 📋 **Strategy Overview**
+## **Strategy Overview**
 
 This EA implements a sophisticated XAUUSD scalping strategy based on Smart Money Concepts with **BIDIRECTIONAL TRADING**:
 
@@ -20,7 +20,7 @@ This EA implements a sophisticated XAUUSD scalping strategy based on Smart Money
 4. **Exits at Bullish Order Blocks** below entry or via Risk/Reward ratio
 5. **Uses Trailing Stop Loss** for maximum profit protection
 
-## 🚀 **Quick Start Installation**
+## **Quick Start Installation**
 
 ### Step 1: Download Required Files
 ```
@@ -80,7 +80,7 @@ EndHour: 18 (NY Close)
 TradeOnFriday: false
 ```
 
-## 📊 **Strategy Logic Flow**
+## **Strategy Logic Flow**
 
 ### Phase 1: Market Structure Analysis (Bidirectional)
 ```mermaid
@@ -145,7 +145,7 @@ Active Management (Both Directions):
 💰 Dynamic Position Sizing based on account balance
 ```
 
-## 🎯 **SMC Indicator Configuration**
+## **SMC Indicator Configuration**
 
 ### Recommended SMC Indicator Settings:
 ```
@@ -172,7 +172,7 @@ Colors:
 3. **Order Block**: Purple rectangle above FVG (buy) or Cyan below FVG (sell)
 4. **Price Action**: Clean break of structure in either direction
 
-## ⚙️ **Advanced Settings**
+## **Advanced Settings**
 
 ### For Conservative Trading:
 ```
@@ -304,7 +304,7 @@ Solution:
 - ✅ Reliable connection during London/NY sessions
 - ✅ MetaTrader 5 platform support
 
-## 🏆 **Optimization Tips**
+## **Optimization Tips**
 
 ### Best Trading Sessions:
 ```
