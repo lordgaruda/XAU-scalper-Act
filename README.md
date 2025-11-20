@@ -272,14 +272,6 @@ Solution:
 - Ensure EA is running continuously
 ```
 
-## 📞 **Support & Updates**
-
-### Getting Help:
-- 📧 Email: support@jagabhai.dpdns.org
-- 💬 Telegram: @MQAutonomous
-- 🌐 Website: https://www.jagabhai.dpdns.org
-- 📱 WhatsApp: Available on request
-
 ### Version Updates:
 - v1.0: Initial release with bullish-only SMC logic
 - v1.1: **Added complete sell-side logic with bearish CHoCH, bearish FVG, and bullish order blocks**
